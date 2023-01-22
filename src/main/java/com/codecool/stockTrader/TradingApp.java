@@ -14,7 +14,7 @@ public class TradingApp {
 
 	public void start() {
 		Scanner keyboard = new Scanner(System.in);
-		System.out.println("Enter a stock symbol (for example aapl):");
+		System.out.println("Enter a stock symbol (for example apl):");
 		String symbol = keyboard.nextLine();
 		System.out.println("Enter the maximum price you are willing to pay: ");
 		double price;
