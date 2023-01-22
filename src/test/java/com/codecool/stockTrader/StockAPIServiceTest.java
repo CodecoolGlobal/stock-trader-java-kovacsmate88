@@ -21,8 +21,12 @@ class StockAPIServiceTest {
     }
 
     @Test
-    void getPrice_serverDown_throwsIOException() {
-
+    void getPrice_serverDown_throwsIOException() throws IOException {
+        RemoteURLReader reader  = mock(RemoteURLReader.class);
+        StockAPIService service = new StockAPIService();
+        service.setReader(reader);
+        when(reader.readFromUrl("https://run.mocky.io/v3/9e14e086-84c2-4f98-9e36-54928830c980?stock=abc")).thenThrow(IOException.class);
+        assertThrows(IOException.class, () -> service.getPrice("abc"));
     }
 
     @Test
