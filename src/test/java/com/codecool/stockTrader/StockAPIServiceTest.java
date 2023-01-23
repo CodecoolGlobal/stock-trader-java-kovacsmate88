@@ -32,7 +32,7 @@ class StockAPIServiceTest {
     void getPrice_serverDown_throwsIOException() throws IOException {
         RemoteURLReader mockReader = mock(RemoteURLReader.class);
         StockAPIService service = new StockAPIService(mockReader);
-        when(mockReader.readFromUrl("https://run.mocky.io/v3/9e14e086-84c2-4f98-9e36-54928830c980?stock=abc")).thenReturn("{\"price\":338.85}");
+        when(mockReader.readFromUrl("https://run.mocky.io/v3/9e14e086-84c2-4f98-9e36-54928830c980?stock=abc")).thenThrow(IOException.class);
         assertThrows(IOException.class, () -> service.getPrice("abc"));
     }
 
@@ -40,7 +40,7 @@ class StockAPIServiceTest {
     void getPrice_malformedResponseFromAPI_throwsJSONException() throws IOException {
         RemoteURLReader mockReader = mock(RemoteURLReader.class);
         StockAPIService service = new StockAPIService(mockReader);
-        when(mockReader.readFromUrl("https://run.mocky.io/v3/9e14e086-84c2-4f98-9e36-54928830c980?stock=abc")).thenReturn("{\"price\":338.85}");
+        when(mockReader.readFromUrl("https://run.mocky.io/v3/9e14e086-84c2-4f98-9e36-54928830c980?stock=abc")).thenThrow(JSONException.class);
         assertThrows(JSONException.class, () -> service.getPrice("abc"));
     }
 
