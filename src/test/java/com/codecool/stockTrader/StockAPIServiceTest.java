@@ -2,6 +2,7 @@ package com.codecool.stockTrader;
 
 import org.json.JSONException;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 
 import java.io.IOException;
 
@@ -11,8 +12,15 @@ import static org.mockito.Mockito.*;
 class StockAPIServiceTest {
 
     @Test
-    void getPrice_existingSymbol_returnsPriceAsDouble() {
-
+    void getPrice_existingSymbol_returnsPriceAsDouble() throws IOException {
+        RemoteURLReader mockReader = mock(RemoteURLReader.class);
+        StockAPIService stock = new StockAPIService(mockReader);
+        double expectedPrice = 338.85;
+        // mock the readFromUrl method to return a json object with a price of 338.85
+        when(mockReader.readFromUrl("https://run.mocky.io/v3/9e14e086-84c2-4f98-9e36-54928830c980?stock=AAPL"))
+                .thenReturn("{\"price\":338.85}");
+        double price = stock.getPrice("AAPL");
+        assertEquals(expectedPrice, price, 0.001);
     }
 
     @Test
@@ -22,19 +30,17 @@ class StockAPIServiceTest {
 
     @Test
     void getPrice_serverDown_throwsIOException() throws IOException {
-        RemoteURLReader reader  = mock(RemoteURLReader.class);
-        StockAPIService service = new StockAPIService();
-        service.setReader(reader);
-        when(reader.readFromUrl("https://run.mocky.io/v3/9e14e086-84c2-4f98-9e36-54928830c980?stock=abc")).thenThrow(IOException.class);
+        RemoteURLReader mockReader = mock(RemoteURLReader.class);
+        StockAPIService service = new StockAPIService(mockReader);
+        when(mockReader.readFromUrl("https://run.mocky.io/v3/9e14e086-84c2-4f98-9e36-54928830c980?stock=abc")).thenReturn("{\"price\":338.85}");
         assertThrows(IOException.class, () -> service.getPrice("abc"));
     }
 
     @Test
     void getPrice_malformedResponseFromAPI_throwsJSONException() throws IOException {
-        RemoteURLReader reader = mock(RemoteURLReader.class);
-        StockAPIService service = new StockAPIService();
-        service.setReader(reader);
-        when(reader.readFromUrl("https://run.mocky.io/v3/9e14e086-84c2-4f98-9e36-54928830c980?stock=abc")).thenReturn("");
+        RemoteURLReader mockReader = mock(RemoteURLReader.class);
+        StockAPIService service = new StockAPIService(mockReader);
+        when(mockReader.readFromUrl("https://run.mocky.io/v3/9e14e086-84c2-4f98-9e36-54928830c980?stock=abc")).thenReturn("{\"price\":338.85}");
         assertThrows(JSONException.class, () -> service.getPrice("abc"));
     }
 

@@ -1,5 +1,6 @@
 package com.codecool.stockTrader;
 
+
 import java.io.IOException;
 
 /**
@@ -19,8 +20,8 @@ public class Trader {
 	private StockAPIService stockService;
 
 	public Trader() {
-        this.stockService = new StockAPIService();
-    }
+		this.stockService = new StockAPIService(null);
+	}
 
 	/** Checks the price of a stock, and buys it if the price is not greater than the bid amount.
 	 * 	@return whether any stock was bought */
