@@ -10,8 +10,10 @@ import java.io.IOException;
 public class StockAPIService {
 
     private static final String apiPath = "https://run.mocky.io/v3/9e14e086-84c2-4f98-9e36-54928830c980?stock=%s";
+    private RemoteURLReader reader;
 
     public StockAPIService(RemoteURLReader reader) {
+        this.reader = reader;
     }
 
     /**
@@ -21,7 +23,7 @@ public class StockAPIService {
      **/
     public double getPrice(String symbol) throws IOException {
         String url = String.format(apiPath, symbol);
-        String result = RemoteURLReader.readFromUrl(url);
+        String result = reader.readFromUrl(url);
         JSONObject json = new JSONObject(result);
         String price = json.get("price").toString();
         return Double.parseDouble(price);
