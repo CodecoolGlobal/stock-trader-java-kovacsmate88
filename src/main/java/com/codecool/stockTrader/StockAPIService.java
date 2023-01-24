@@ -25,6 +25,9 @@ public class StockAPIService {
         String url = String.format(apiPath, symbol);
         String result = reader.readFromUrl(url);
         JSONObject json = new JSONObject(result);
+        if (!json.has("price")) {
+            throw new IllegalArgumentException("Symbol does not exist!");
+        }
         String price = json.get("price").toString();
         return Double.parseDouble(price);
     }

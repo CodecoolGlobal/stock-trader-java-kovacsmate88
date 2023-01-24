@@ -18,9 +18,10 @@ public class Trader {
     }
 
     private StockAPIService stockService;
+    private RemoteURLReader reader = new RemoteURLReader();
 
     public Trader() {
-        this.stockService = new StockAPIService(null);
+        this.stockService = new StockAPIService(reader);
     }
 
     public void setStockService(StockAPIService stockService) {
