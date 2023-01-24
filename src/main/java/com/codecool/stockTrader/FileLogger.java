@@ -7,7 +7,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class FileLogger {
+public class FileLogger implements Logger{
 
     private static FileLogger instance;
 
