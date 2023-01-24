@@ -44,8 +44,8 @@ class TraderTest {
         Trader trader = new Trader();
         trader.setStockService(stockService);
         double bid = 34;
-        when(mockReader.readFromUrl("https://run.mocky.io/v3/9e14e086-84c2-4f98-9e36-54928830c980?stock=abc"))
-                .thenThrow(IllegalArgumentException.class);
+        doThrow(new IllegalArgumentException("Symbol does not exist!")).
+                when(mockReader).readFromUrl("https://run.mocky.io/v3/9e14e086-84c2-4f98-9e36-54928830c980?stock=abc");
         assertThrows(IllegalArgumentException.class, () -> trader.buy("abc", bid));
     }
 }
